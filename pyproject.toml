@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "containerised-operations-api"
+version = "0.1.0"
+description = "A container-ready infrastructure operations API and CLI for DevOps practice."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "psutil>=6.0",
+    "fastapi[standard]>=0.143.1",
+]
+
+[project.scripts]
+infra-toolkit = "infra_toolkit.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.11",
+    "httpx2>=1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 150
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
