@@ -1,6 +1,6 @@
 # Containerised Operations API
 
-A Python-based infrastructure operations API and CLI, built as part of my hands-on AWS and DevOps portfolio. This project builds on reusable infrastructure monitoring logic and extends it with a REST API, automated testing, and containerisation.
+A Python-based infrastructure operations API and CLI, built as part of my hands-on AWS and DevOps portfolio. This project builds on reusable [infrastructure monitoring logic](https://github.com/mathieu-boe/python-infrastructure-toolkit) and extends it with a REST API, automated testing, and containerisation.
 
 ## Objectives
 
