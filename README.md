@@ -22,8 +22,8 @@ A Python-based infrastructure operations API and CLI, built as part of my hands-
 - [x] Existing threshold evaluation logic integrated.
 - [x] CLI and its automated tests included.
 - [x] Project metadata updated for the Containerised Operations API.
-- [ ] Initial quality checks verified in the new repository.
-- [ ] Initial Git commit created.
+- [x] Initial quality checks verified in the new repository.
+- [x] Initial Git commit created.
 
 **Milestone 2 — REST API implementation** (implemented locally)
 
@@ -36,17 +36,17 @@ A Python-based infrastructure operations API and CLI, built as part of my hands-
 - [x] API responses include resource measurements, evaluation status, and threshold violations.
 - [x] Automated API tests added.
 - [x] API manually tested using HTTP requests.
-- [ ] All tests and quality checks verified in the new repository.
+- [x] All tests and quality checks verified in the new repository.
 
-**Milestone 3 — Containerisation with Docker** (planned)
+**Milestone 3 — Containerisation with Docker** (implemented locally)
 
-- [ ] Dockerfile created for the API application.
-- [ ] `.dockerignore` configured to exclude unnecessary files.
-- [ ] Docker image builds successfully.
-- [ ] API runs inside a container.
-- [ ] API endpoints tested against the running container.
-- [ ] Container port mapping and runtime configuration documented.
-- [ ] Container execution verified without requiring AWS resources.
+- [x] Dockerfile created for the API application.
+- [x] `.dockerignore` configured to exclude unnecessary files.
+- [x] Docker image builds successfully.
+- [x] API runs inside a container.
+- [x] API endpoints tested against the running container.
+- [x] Container port mapping and runtime configuration documented.
+- [x] Container execution verified without requiring AWS resources.
 
 **Milestone 4 — Continuous integration with GitHub Actions** (partially integrated)
 
@@ -62,8 +62,8 @@ A Python-based infrastructure operations API and CLI, built as part of my hands-
 
 - [x] README structure established to match the Infrastructure Automation Toolkit project.
 - [x] Local setup and API usage documented.
-- [ ] Docker build and run instructions verified.
-- [ ] All local tests and quality checks passing.
+- [x] Docker build and run instructions verified.
+- [x] All local tests and quality checks passing.
 - [ ] GitHub Actions pipeline passing.
 - [ ] Repository committed and pushed to GitHub.
 
@@ -287,17 +287,64 @@ The same monitoring exit codes apply to human-readable and JSON output. The `hea
 
 ### Docker containerisation
 
-Docker will package the application and its runtime dependencies into an image, allowing the API to run consistently across compatible environments.
+Docker packages the application and its runtime dependencies into an image, allowing the API to run consistently across compatible environments.
 
-The planned containerisation workflow is:
+The container uses Python 3.14 slim, installs the application from `pyproject.toml`, and runs Uvicorn as a non-root user. The image excludes development files, tests, local virtual environments, and Git metadata from its build context.
 
-1. Create a Dockerfile.
-2. Configure `.dockerignore` to exclude the virtual environment, Git metadata, caches, and other unnecessary files.
-3. Build the Docker image.
-4. Run the container with the API port mapped to the host.
-5. Test the health, system information, and resource usage endpoints against the running container.
+## Build the image
 
-Docker build and run commands will be added once the Dockerfile has been implemented and tested.
+Run from the repository root:
+
+```bash
+docker build -t containerised-operations-api:0.1.0 .
+```
+
+## Start the container
+
+```bash
+docker run -d \
+  --name operations-api \
+  -p 8000:8000 \
+  containerised-operations-api:0.1.0
+```
+
+The API is available on the host at `http://localhost:8000`.
+
+## Test the endpoints
+
+```bash
+curl -i http://localhost:8000/health
+curl -i http://localhost:8000/system-info
+curl -i "http://localhost:8000/resource-usage?threshold=85"
+```
+
+The health endpoint should return HTTP `200 OK` with an operational status. The system information and resource usage endpoints should also return HTTP `200 OK`.
+
+Test input validation with an invalid threshold:
+
+```bash
+curl -i "http://localhost:8000/resource-usage?threshold=101"
+```
+
+This should return HTTP `422`, because thresholds must be between 0 and 100 inclusive.
+
+## Inspect and stop the container
+
+```bash
+docker ps
+docker logs operations-api
+docker stop operations-api
+docker rm operations-api
+```
+
+The final two commands stop and remove the container. The built image remains available locally.
+
+## Containerisation notes
+
+- The container listens on port `8000`; the `-p 8000:8000` option publishes that port on the host.
+- The API runs as a non-root user inside the container.
+- Resource measurements describe the environment visible to the application inside the container and may differ from host-level measurements.
+- Local Docker testing does not require AWS credentials or AWS infrastructure.
 
 ### Run quality checks and automated tests
 
