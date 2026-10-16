@@ -1,4 +1,4 @@
-name: Python quality checks
+name: CI - Python Quality and Docker Build
 
 on:
   push:
