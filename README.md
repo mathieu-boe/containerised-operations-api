@@ -13,7 +13,7 @@ A Python-based infrastructure operations API and CLI, built as part of my hands-
 
 ## Current status
 
-**Milestone 1 — Project setup and infrastructure toolkit integration** (in progress)
+**Milestone 1 — Project setup and infrastructure toolkit integration** (completed)
 
 - [x] Independent repository created for Project 2.
 - [x] Python package structure copied into the new repository.
@@ -48,24 +48,24 @@ A Python-based infrastructure operations API and CLI, built as part of my hands-
 - [x] Container port mapping and runtime configuration documented.
 - [x] Container execution verified without requiring AWS resources.
 
-**Milestone 4 — Continuous integration with GitHub Actions** (partially integrated)
+**Milestone 4 — Continuous integration with GitHub Actions** (completed)
 
 - [x] GitHub Actions workflow included in the repository.
 - [x] Workflow configured to install the project and development dependencies.
 - [x] Ruff linting and formatting checks configured.
 - [x] pytest execution configured.
-- [ ] Workflow verified against the new repository.
-- [ ] Docker build validation added to CI.
-- [ ] All required CI checks passing on GitHub.
+- [x] Workflow verified against the new repository.
+- [x] Docker build validation added to CI.
+- [x] All required CI checks passing on GitHub.
 
-**Milestone 5 — Documentation and project verification** (planned)
+**Milestone 5 — Documentation and project verification** (completed)
 
 - [x] README structure established to match the Infrastructure Automation Toolkit project.
 - [x] Local setup and API usage documented.
 - [x] Docker build and run instructions verified.
 - [x] All local tests and quality checks passing.
-- [ ] GitHub Actions pipeline passing.
-- [ ] Repository committed and pushed to GitHub.
+- [x] GitHub Actions pipeline passing.
+- [x] Repository committed and pushed to GitHub.
 
 ## Development
 
@@ -366,11 +366,9 @@ The automated test suite covers the infrastructure toolkit, CLI behaviour, thres
 
 ### Continuous integration
 
-The GitHub Actions workflow runs quality checks when code is pushed to `main` or a pull request targets `main`.
+The GitHub Actions workflow, named **CI - Python Quality and Docker Build**, runs when code is pushed to `main` or a pull request targets `main`.
 
-The workflow installs the project and development dependencies, runs Ruff linting and formatting checks, and executes the automated tests.
-
-Docker image build validation will be added as part of the containerisation milestone.
+The `quality` job installs the project and development dependencies, runs Ruff linting and formatting checks, and executes the automated test suite. The `docker-build` job builds the Docker image to validate the Dockerfile and image build process without publishing the image to a registry.
 
 ## Security and cost
 
